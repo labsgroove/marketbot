@@ -1,0 +1,37 @@
+{
+  "name": "marketplace-post-sale-bot",
+  "version": "1.0.0",
+  "description": "Bot em Node.js para envio automático de mensagens pós-venda com integração ao Mercado Livre e outros marketplaces",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "nodejs",
+    "mercado-livre",
+    "marketplace",
+    "webhook",
+    "bot",
+    "saas",
+    "post-sale"
+  ],
+  "author": "Digão",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "nodemon": "^3.0.3",
+    "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
