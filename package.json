@@ -2,11 +2,11 @@
   "name": "marketplace-post-sale-bot",
   "version": "1.0.0",
   "description": "Bot em Node.js para envio automático de mensagens pós-venda com integração ao Mercado Livre e outros marketplaces",
-  "main": "src/server.js",
+  "main": "server.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
