@@ -4,12 +4,26 @@ const express = require('express')
 const webhookRoutes = require('./routes/webhooks')
 const authRoutes = require('./routes/auth')
 const mlService = require('./services/mercadolivre.service')
+const path = require('path')
+const adminRoutes = require('./routes/admin')
 
 const app = express()
 app.use(express.json())
 
 app.use('/webhooks', webhookRoutes)
 app.use('/auth', authRoutes)
+app.use('/api/admin', adminRoutes)
+
+// serve admin UI static files
+app.use('/admin', express.static(path.join(__dirname, 'public', 'admin')))
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'))
+})
+
+// redirect root to admin UI
+app.get('/', (req, res) => {
+  res.redirect('/admin')
+})
 
 // Aceita callback público registrado como /callback e encaminha para o handler interno
 app.get('/callback', (req, res) => {

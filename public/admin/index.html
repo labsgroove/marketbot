@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin - Auto Messages</title>
+  <link rel="stylesheet" href="/admin/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Configurar Mensagens Automáticas</h1>
+
+    <section id="events-section">
+      <h2>Eventos</h2>
+      <div id="events-list"></div>
+      <button id="new-event">Nova regra</button>
+    </section>
+
+    <section id="editor" class="card hidden">
+      <h2 id="editor-title">Nova regra</h2>
+      <form id="event-form">
+        <input type="hidden" id="event-id" />
+        <label>Nome<br/><input id="event-name" required /></label>
+        <label>Evento<br/>
+          <select id="event-type">
+            <option value="order_placed">Pedido criado</option>
+            <option value="order_shipped">Pedido enviado</option>
+            <option value="custom">Personalizado</option>
+          </select>
+        </label>
+        <label>Atraso (minutos)<br/><input id="event-delay" type="number" value="0" min="0" /></label>
+        <label>Mensagem (uso de placeholders como {{order_id}})<br/>
+          <textarea id="event-message" rows="5"></textarea>
+        </label>
+        <label><input id="event-enabled" type="checkbox" checked /> Habilitado</label>
+        <div class="actions">
+          <button type="submit">Salvar</button>
+          <button type="button" id="cancel-edit">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="manual" class="card">
+      <h2>Responder chat / Enviar mensagem manual</h2>
+      <form id="send-form">
+        <label>Pack ID / Destinatário<br/><input id="send-to" required placeholder="ex: 123456789" /></label>
+        <label>Canal<br/>
+          <select id="send-channel">
+            <option value="mercadolivre">MercadoLivre</option>
+          </select>
+        </label>
+        <label>Mensagem<br/><textarea id="send-text" rows="4"></textarea></label>
+        <div class="actions"><button type="submit">Enviar</button></div>
+      </form>
+      <div id="send-result" class="muted"></div>
+    </section>
+  </main>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

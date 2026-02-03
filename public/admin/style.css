@@ -1,0 +1,13 @@
+:root{font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial}
+body{background:#f5f7fa;color:#111;margin:0;padding:20px}
+.container{max-width:900px;margin:0 auto}
+.card{background:#fff;border:1px solid #e4e7eb;padding:16px;border-radius:6px;margin-top:16px}
+.hidden{display:none}
+.muted{color:#666;font-size:0.95rem}
+#events-list .event{padding:8px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.controls button{margin-left:8px}
+label{display:block;margin-top:8px}
+input,select,textarea{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;margin-top:4px}
+.actions{margin-top:12px}
+button{background:#2563eb;color:white;border:0;padding:8px 12px;border-radius:6px}
+button.secondary{background:#6b7280}

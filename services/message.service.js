@@ -7,7 +7,7 @@ module.exports = {
   async send({ channel, to, data }) {
     if (channel !== 'mercadolivre') return
 
-    const message = template(data)
+    const message = (data && data.text) ? data.text : template(data)
 
     const tokens = mlService.loadTokens()
     const accessToken = tokens?.access_token || process.env.ML_ACCESS_TOKEN
