@@ -43,4 +43,24 @@ router.post('/send', async (req, res) => {
   }
 })
 
+// List recent message packs (incoming chats)
+router.get('/messages', async (req, res) => {
+  try {
+    const list = await messageService.list()
+    res.json(list)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// Get a single message pack (chat) by id
+router.get('/messages/:id', async (req, res) => {
+  try {
+    const pack = await messageService.getPack(req.params.id)
+    res.json(pack)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 module.exports = router

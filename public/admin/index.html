@@ -41,6 +41,20 @@
     </section>
 
     <section id="manual" class="card">
+      <h2>Mensagens recebidas</h2>
+      <div id="messages-section">
+        <div id="messages-list" class="muted">Carregando mensagens...</div>
+      </div>
+      <div id="chat-panel" class="card hidden">
+        <h3 id="chat-title">Chat</h3>
+        <div id="chat-messages" style="max-height:300px;overflow:auto;border:1px solid #ddd;padding:8px;margin-bottom:8px;background:#fff"></div>
+        <form id="chat-reply-form">
+          <input type="hidden" id="chat-reply-to" />
+          <label>Responder<br/><textarea id="chat-reply-text" rows="3"></textarea></label>
+          <div class="actions"><button type="submit">Responder</button> <button type="button" id="chat-close">Fechar</button></div>
+        </form>
+      </div>
+
       <h2>Responder chat / Enviar mensagem manual</h2>
       <form id="send-form">
         <label>Pack ID / Destinatário<br/><input id="send-to" required placeholder="ex: 123456789" /></label>

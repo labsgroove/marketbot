@@ -24,4 +24,25 @@ module.exports = {
       }
     )
   }
+,
+  async list({ limit = 50 } = {}) {
+    const tokens = mlService.loadTokens()
+    const accessToken = tokens?.access_token || process.env.ML_ACCESS_TOKEN
+    const seller = process.env.ML_SELLER_ID
+    const url = `https://api.mercadolibre.com/messages/packs?seller_id=${seller}&limit=${limit}`
+    const res = await axios.get(url, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    })
+    return res.data
+  },
+  async getPack(packId) {
+    const tokens = mlService.loadTokens()
+    const accessToken = tokens?.access_token || process.env.ML_ACCESS_TOKEN
+    const seller = process.env.ML_SELLER_ID
+    const url = `https://api.mercadolibre.com/messages/packs/${packId}?seller_id=${seller}`
+    const res = await axios.get(url, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    })
+    return res.data
+  }
 }

@@ -36,6 +36,55 @@ function openEditor(obj) {
 
 function closeEditor() { el('#editor').classList.add('hidden') }
 
+async function loadMessages() {
+  try {
+    const list = await api('/messages')
+    console.log('Mensagens recebidas:', list)
+    const container = el('#messages-list')
+    container.innerHTML = ''
+    if (!list || !list.results || !list.results.length) {
+      container.innerHTML = '<p class="muted">Nenhuma mensagem encontrada.</p>'
+      return
+    }
+    list.results.forEach(p => {
+      const div = document.createElement('div')
+      div.className = 'message-pack'
+      const title = p.subject || p.last_message?.text?.slice(0,60) || p.id
+      div.innerHTML = `<strong>${title}</strong> — <small>${p.id}</small>
+        <div class="controls"><button data-id="${p.id}" class="open-chat">Abrir chat</button></div>`
+      container.appendChild(div)
+    })
+  } catch (err) {
+    console.error('Erro ao buscar mensagens:', err)
+    el('#messages-list').textContent = 'Erro ao carregar mensagens.'
+  }
+}
+
+function openChat(packId, title) {
+  el('#chat-panel').classList.remove('hidden')
+  el('#chat-title').textContent = 'Chat: ' + (title || packId)
+  el('#chat-reply-to').value = packId
+  el('#chat-messages').textContent = 'Carregando...'
+  api('/messages/' + packId).then(pack => {
+    console.log('Pack:', pack)
+    const area = el('#chat-messages')
+    area.innerHTML = ''
+    const messages = pack.messages || pack.messages_preview || []
+    messages.forEach(m => {
+      const p = document.createElement('div')
+      p.style.padding = '6px'
+      p.style.borderBottom = '1px solid #eee'
+      p.innerHTML = `<strong>${m.from}</strong>: ${m.text || m.body || JSON.stringify(m)}`
+      area.appendChild(p)
+    })
+  }).catch(err => {
+    console.error('Erro ao carregar pack:', err)
+    el('#chat-messages').textContent = 'Erro ao carregar chat.'
+  })
+}
+
+function closeChat() { el('#chat-panel').classList.add('hidden'); el('#chat-messages').innerHTML = '' }
+
 document.addEventListener('DOMContentLoaded', () => {
   loadEvents()
 
@@ -52,6 +101,34 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!confirm('Apagar essa regra?')) return
       await api('/events/' + id, { method: 'DELETE' })
       loadEvents()
+    }
+  })
+
+  // messages list actions
+  el('#messages-list').addEventListener('click', (e) => {
+    if (e.target.matches('button.open-chat')) {
+      const id = e.target.dataset.id
+      openChat(id, '')
+    }
+  })
+
+  el('#chat-close').addEventListener('click', () => closeChat())
+
+  el('#chat-reply-form').addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const to = el('#chat-reply-to').value
+    const text = el('#chat-reply-text').value
+    if (!to || !text) return alert('Preencha a mensagem')
+    const payload = { channel: 'mercadolivre', to, data: { text } }
+    try {
+      const res = await api('/send', { method: 'POST', body: JSON.stringify(payload) })
+      console.log('Resposta envio:', res)
+      el('#chat-reply-text').value = ''
+      // atualiza lista de mensagens
+      openChat(to)
+    } catch (err) {
+      console.error('Erro ao enviar resposta:', err)
+      alert('Erro ao enviar')
     }
   })
 
@@ -83,4 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
     el('#send-result').textContent = res.ok ? 'Enviado com sucesso' : 'Erro: ' + (res.error || 'unknown')
     setTimeout(() => el('#send-result').textContent = '', 4000)
   })
+  // carregar mensagens ao abrir admin
+  loadMessages()
 })
